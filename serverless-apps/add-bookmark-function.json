@@ -1,0 +1,44 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "bookmark",
+      "direction": "in",
+      "type": "cosmosDB",
+      "databaseName": "func-io-learn-db",
+      "collectionName": "Bookmarks",
+      "connectionStringSetting": "hadodrak_DOCUMENTDB",
+      "id": "{id}",
+      "partitionKey": "{id}"
+    },
+    {
+      "name": "newbookmark",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "func-io-learn-db",
+      "collectionName": "Bookmarks",
+      "connectionStringSetting": "hadodrak_DOCUMENTDB",
+      "partitionKey": "{id}"
+    },
+    {
+      "name": "newmessage",
+      "direction": "out",
+      "type": "queue",
+      "queueName": "bookmarks-post-process",
+      "connection": "storageaccountlearnb3b9_STORAGE"
+    }
+  ]
+}
