@@ -1,0 +1,37 @@
+#init project
+func init
+
+#add function
+func new
+
+#run function
+func start
+
+#test function from browser
+#http://localhost:7071/api/simple-interest?principal=5000&rate=.035&term=36
+
+<#
+AZURE CLI
+Create a function app in Azure
+
+RESOURCEGROUP=learn-b0996bf8-ecde-4bc7-9d8c-38670c41d865
+STORAGEACCT=learnstorage$(openssl rand -hex 5)
+FUNCTIONAPP=learnfunctions$(openssl rand -hex 5)
+
+az storage account create \
+  --resource-group "$RESOURCEGROUP" \
+  --name "$STORAGEACCT" \
+  --kind StorageV2 \
+  --location centralus
+
+az functionapp create \
+  --resource-group "$RESOURCEGROUP" \
+  --name "$FUNCTIONAPP" \
+  --storage-account "$STORAGEACCT" \
+  --runtime node \
+  --consumption-plan-location centralus \
+  --functions-version 2
+#>
+
+#publish from the project folder
+func azure functionapp publish "$FUNCTIONAPP"
