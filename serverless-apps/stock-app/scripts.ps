@@ -1,0 +1,65 @@
+# Define storage name variable
+export STORAGE_ACCOUNT_NAME=mslsigrstorage$(openssl rand -hex 5)
+echo "Storage Account Name: $STORAGE_ACCOUNT_NAME"
+
+# Create storage account
+az storage account create \
+  --name $STORAGE_ACCOUNT_NAME \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --kind StorageV2 \
+  --sku Standard_LRS
+
+# Create Cosmos DB account
+az cosmosdb create  \
+  --name msl-sigr-cosmos-$(openssl rand -hex 5) \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c
+
+# Print connection strings to console
+STORAGE_CONNECTION_STRING=$(az storage account show-connection-string \
+--name $(az storage account list \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --query [0].name -o tsv) \
+--resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+--query "connectionString" -o tsv)
+
+COSMOSDB_ACCOUNT_NAME=$(az cosmosdb list \
+    --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+    --query [0].name -o tsv)
+
+COSMOSDB_CONNECTION_STRING=$(az cosmosdb list-connection-strings  \
+  --name $COSMOSDB_ACCOUNT_NAME \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --query "connectionStrings[?description=='Primary SQL Connection String'].connectionString" -o tsv)
+
+COSMOSDB_MASTER_KEY=$(az cosmosdb list-keys \
+--name $COSMOSDB_ACCOUNT_NAME \
+--resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+--query primaryMasterKey -o tsv)
+
+printf "\n\nReplace <STORAGE_CONNECTION_STRING> with:\n$STORAGE_CONNECTION_STRING\n\nReplace <COSMOSDB_CONNECTION_STRING> with:\n$COSMOSDB_CONNECTION_STRING\n\nReplace <COSMOSDB_MASTER_KEY> with:\n$COSMOSDB_MASTER_KEY\n\n"
+
+# Create SignalR account
+SIGNALR_SERVICE_NAME=msl-sigr-signalr$(openssl rand -hex 5)
+az signalr create \
+  --name $SIGNALR_SERVICE_NAME \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --sku Free_DS2 \
+  --unit-count 1
+
+# Update SignalR account to support serverless
+az resource update \
+  --resource-type Microsoft.SignalRService/SignalR \
+  --name $SIGNALR_SERVICE_NAME \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --set properties.features[flag=ServiceMode].value=Serverless
+
+# Print SignalR account connection string
+SIGNALR_CONNECTION_STRING=$(az signalr key list \
+  --name $(az signalr list \
+    --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+    --query [0].name -o tsv) \
+  --resource-group learn-3ce64cfc-47f2-4d3f-a093-5f882fab922c \
+  --query primaryConnectionString -o tsv)
+
+printf "\n\nReplace <SIGNALR_CONNECTION_STRING> with:\n$SIGNALR_CONNECTION_STRING\n\n"
+
