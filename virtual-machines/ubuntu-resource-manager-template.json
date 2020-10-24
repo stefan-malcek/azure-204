@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_test_ubuntu_cus_vm_name": {
+            "defaultValue": "test-ubuntu-cus-vm",
+            "type": "String"
+        },
+        "disks_test_ubuntu_cus_vm_disk1_5d2345658b654dc2b9a02606d074d64d_externalid": {
+            "defaultValue": "/subscriptions/8b7ea391-2824-4335-9e26-70acfb10038b/resourceGroups/LEARN-869A11C3-9A69-47BC-A70D-D34554CB8F8A/providers/Microsoft.Compute/disks/test-ubuntu-cus-vm_disk1_5d2345658b654dc2b9a02606d074d64d",
+            "type": "String"
+        },
+        "networkInterfaces_test_ubuntu_cus_vm209_externalid": {
+            "defaultValue": "/subscriptions/8b7ea391-2824-4335-9e26-70acfb10038b/resourceGroups/learn-869a11c3-9a69-47bc-a70d-d34554cb8f8a/providers/Microsoft.Network/networkInterfaces/test-ubuntu-cus-vm209",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('virtualMachines_test_ubuntu_cus_vm_name')]",
+            "location": "westeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_test_ubuntu_cus_vm_name'), '_disk1_5d2345658b654dc2b9a02606d074d64d')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_test_ubuntu_cus_vm_disk1_5d2345658b654dc2b9a02606d074d64d_externalid')]"
+                        },
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_test_ubuntu_cus_vm_name')]",
+                    "adminUsername": "hadodrak",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_test_ubuntu_cus_vm209_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        }
+    ]
+}
