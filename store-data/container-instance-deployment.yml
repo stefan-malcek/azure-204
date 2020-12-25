@@ -1,0 +1,19 @@
+apiVersion: 2018-10-01
+location: eastus
+name: mycontainer
+properties:
+  containers:
+  - name: dotnetapp
+    properties:
+      image: demoregistry3000.azurecr.io/dotnetapp
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+  osType: Linux
+  imageRegistryCredentials:
+    - server: demoregistry3000.azurecr.io
+      username: demoregistry3000
+      password: <password>
+tags: null
+type: Microsoft.ContainerInstance/containerGroups
