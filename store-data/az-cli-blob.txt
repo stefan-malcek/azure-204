@@ -1,0 +1,11 @@
+az storage account create --name storagegrp01no02 --resource-group storage-grp-01 --location EastUS --sku Standard_LRS 
+
+az storage container create --account-name storagegrp01no02 --name demo
+
+az storage blob upload --account-name storagegrp01no02 --container-name demo --name tmp/appsettings.json --file appsettings.json
+
+az storage container set-permission --account-name storagegrp01no02 --name demo --public-access blob
+
+az storage blob list --account-name storagegrp01no02 --container-name demo --output table
+
+az storage blob download --account-name storagegrp01no02 --container-name demo --name tmp/appsettings.json --file had.json

@@ -1,0 +1,7 @@
+azcopy login --tenant-id=2a9afdd8-56c0-4020-a075-0a898156996b
+
+azcopy make "https://storagegrp01no01.blob.core.windows.net/tmp"
+
+azcopy copy "sample.txt" "https://storagegrp01no01.blob.core.windows.net/tmp/sample.txt"
+
+azcopy copy "https://storagegrp01no01.blob.core.windows.net/tmp/sample.txt" "test.txt"
