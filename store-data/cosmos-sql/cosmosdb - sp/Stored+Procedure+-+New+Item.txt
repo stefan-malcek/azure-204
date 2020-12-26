@@ -1,0 +1,13 @@
+function AddItem(p_document) {
+
+    var context = getContext();
+    var container = context.getCollection();
+
+    var accepted = container.createDocument(container.getSelfLink(),
+        p_document,
+        function (err, item) {
+            if (err) throw new Error('Error' + err.message);
+            context.getResponse().setBody(item.id)
+        });
+    if (!accepted) return;
+}

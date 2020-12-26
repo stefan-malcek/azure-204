@@ -1,0 +1,8 @@
+function Append(){
+	var context=getContext();
+	var request=context.getRequest();
+	var document=request.getBody();
+
+	document["orders"]=0;
+	request.setBody(document);
+}
