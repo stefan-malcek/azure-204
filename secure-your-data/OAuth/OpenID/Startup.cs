@@ -16,18 +16,18 @@ namespace OpenID
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
+            
         }
 
         public IConfiguration Configuration { get; }
 
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddSignIn(Configuration, "AzureAd")
            .AddWebAppCallsProtectedWebApi(Configuration,
-                                          initialScopes: new string[] { "user.read" })
+                                          initialScopes: new string[] { "user.read" , "https://storage.azure.com/user_impersonation" })
            .AddInMemoryTokenCaches();
 
             services.AddRazorPages().AddMvcOptions(options =>
@@ -60,16 +60,16 @@ namespace OpenID
             app.UseCookiePolicy();
             app.UseRouting();
 
-
+            
             app.UseAuthentication();
-            app.UseAuthorization();
+             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+                
             });
         }
     }
