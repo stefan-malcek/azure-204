@@ -1,0 +1,1 @@
+ az vm encryption enable -g vm-grp2 --name encrypt --disk-encryption-keyvault demovault2001
