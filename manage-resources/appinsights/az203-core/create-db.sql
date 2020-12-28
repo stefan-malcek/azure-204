@@ -1,0 +1,14 @@
+CREATE TABLE Products (
+    Id int NOT NULL IDENTITY,
+    Name varchar(255) NOT NULL,
+    price real,
+    PRIMARY KEY (Id)
+);
+
+insert into Products(Name,price) values('ProductA',40.99);
+
+insert into Products(Name,price) values('ProductB',50.99);
+
+insert into Products(Name,price) values('ProductC',60.99);
+
+drop table Products;
