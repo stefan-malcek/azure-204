@@ -28,13 +28,13 @@ namespace az203_core.Controllers
             if (string.IsNullOrEmpty(_cache_obj))
             {
                 lst = _context.Products.ToList();
-                /*
-                 * Use the following statements if you want to set an expiration time for the redis keys
+
+                // Use the following statements if you want to set an expiration time for the redis keys
                 DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
                 options.SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
-                _cache.SetString("Products", JsonConvert.SerializeObject(lst),options);
-                */
-                _cache.SetString("Products", JsonConvert.SerializeObject(lst));
+                _cache.SetString("Products", JsonConvert.SerializeObject(lst), options);
+
+                //  _cache.SetString("Products", JsonConvert.SerializeObject(lst));
             }
             else
             {
