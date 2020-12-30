@@ -19,6 +19,7 @@ namespace queue_receive
 
         static async Task QueueFunction()
         {
+            // Set ReceiveMode.ReceiveAndDelete for deleting messages from queue after receiving.
             _client = new QueueClient(_bus_connectionstring, _queue_name);
 
             var _options = new MessageHandlerOptions(ExceptionReceived)
@@ -39,7 +40,7 @@ namespace queue_receive
             message.UserProperties.TryGetValue("Quantity", out object quantity);
             Console.WriteLine($"Quantity : {(int)quantity}");
 
-
+            // Do not call when ReceiveMode.ReceiveAndDelete is set.
             await _client.CompleteAsync(message.SystemProperties.LockToken);
         }
 
