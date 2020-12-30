@@ -19,6 +19,7 @@ namespace queue_receive
 
         static async Task QueueFunction()
         {
+            // Configure to read from dead letter queue:  var deadLetterQueueName = EntityNameHelper.FormatDeadLetterPath(_queue_name);   
             // Set ReceiveMode.ReceiveAndDelete for deleting messages from queue after receiving.
             _client = new QueueClient(_bus_connectionstring, _queue_name);
 
