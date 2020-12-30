@@ -17,10 +17,16 @@ namespace queue_send
             for (int i = 1; i <= 10; i++)
             {
                 Order obj = new Order();
-                var _message = new Message(Encoding.UTF8.GetBytes(obj.ToString()));
-                _message.TimeToLive = TimeSpan.FromSeconds(10);
-                await _client.SendAsync(_message);
-                Console.WriteLine($"Sending Message : {obj.Id} ");
+                var message = new Message(Encoding.UTF8.GetBytes(obj.ToString()));
+
+                // Setting TTL for the message will override the queue TTL.
+                message.TimeToLive = TimeSpan.FromSeconds(240);
+
+                message.MessageId = obj.Id;
+                message.UserProperties.Add("Quantity", obj.quantity);
+                
+                await _client.SendAsync(message);
+                Console.WriteLine($"Sending Message : {obj.Id}");
             }
         }
     }

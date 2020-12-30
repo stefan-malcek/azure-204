@@ -32,12 +32,15 @@ namespace queue_receive
         }
 
 
-        static async Task Process_Message(Message _message, CancellationToken _token)
+        static async Task Process_Message(Message message, CancellationToken token)
         {
-            Console.WriteLine(Encoding.UTF8.GetString(_message.Body));
+            Console.WriteLine($"Message ID : {message.MessageId}");
+            Console.WriteLine($"Sequence Number ID : {message.SystemProperties.SequenceNumber}");
+            message.UserProperties.TryGetValue("Quantity", out object quantity);
+            Console.WriteLine($"Quantity : {(int)quantity}");
 
 
-            await _client.CompleteAsync(_message.SystemProperties.LockToken);
+            await _client.CompleteAsync(message.SystemProperties.LockToken);
         }
 
         static Task ExceptionReceived(ExceptionReceivedEventArgs args)
