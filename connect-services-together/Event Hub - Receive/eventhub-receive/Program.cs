@@ -9,7 +9,7 @@ namespace eventhub_receive
 {
     class Program
     {
-        private static string connstring = "";
+        private static string connstring = "Endpoint=sb://appnamespacehub.servicebus.windows.net/;SharedAccessKeyName=Policy;SharedAccessKey=MyHH0jhxDrtRsqQotfEtFIZGR8l1VIptvBslHYniA4k=;EntityPath=apphub";
         private static string hubname = "apphub";
 
         static void Main(string[] args)
