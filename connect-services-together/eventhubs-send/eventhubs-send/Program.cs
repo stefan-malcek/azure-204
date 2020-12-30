@@ -5,6 +5,7 @@ using LumenWorks.Framework.IO.Csv;
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,7 +50,15 @@ namespace eventhubs_send
                 obj.resource = row[10].ToString();
                 obj.id = Guid.NewGuid().ToString();
 
-                using EventDataBatch batch_obj = await client.CreateBatchAsync();
+                // Set partition.
+                var partitions = await client.GetPartitionIdsAsync();
+                var options = new CreateBatchOptions
+                {
+                    PartitionId = partitions[1]
+                };
+                using EventDataBatch batch_obj = await client.CreateBatchAsync(options);
+
+                // using EventDataBatch batch_obj = await client.CreateBatchAsync();
                 batch_obj.TryAdd(new EventData(Encoding.UTF8.GetBytes(obj.ToString())));
                 await client.SendAsync(batch_obj);
 

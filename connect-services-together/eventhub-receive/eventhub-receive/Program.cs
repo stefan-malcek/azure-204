@@ -27,6 +27,7 @@ namespace eventhub_receive
             await foreach (PartitionEvent Allevent in client.ReadEventsAsync(cancellation))
             {
                 EventData event_data = Allevent.Data;
+                Console.WriteLine($"Partition Id : {Allevent.Partition.PartitionId}");
                 Console.WriteLine(Encoding.UTF8.GetString(event_data.Body.ToArray()));
             }
         }
