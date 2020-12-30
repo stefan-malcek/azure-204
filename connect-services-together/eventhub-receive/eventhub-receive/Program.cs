@@ -23,6 +23,12 @@ namespace eventhub_receive
 
             var cancellation = new CancellationToken();
 
+            // Get partition and offset.
+            //string _partition = (await client.GetPartitionIdsAsync()).First();
+            //EventPosition _position = EventPosition.FromSequenceNumber(40);
+            //Console.WriteLine("Getting events from a certain position from a particular partition");
+            //await foreach (PartitionEvent _recent_event in client.ReadEventsFromPartitionAsync(_partition, _position, cancellation))
+
             Console.WriteLine("Getting the events");
             await foreach (PartitionEvent Allevent in client.ReadEventsAsync(cancellation))
             {
