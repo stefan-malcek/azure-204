@@ -1,0 +1,7 @@
+az acr login --name appbuilds
+
+docker pull nginx
+
+docker tag nginx appbuilds.azurecr.io/samples/nginx
+
+docker push appbuilds.azurecr.io/samples/nginx
