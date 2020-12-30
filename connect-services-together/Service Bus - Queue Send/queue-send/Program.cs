@@ -18,6 +18,7 @@ namespace queue_send
             {
                 Order obj = new Order();
                 var _message = new Message(Encoding.UTF8.GetBytes(obj.ToString()));
+                _message.TimeToLive = TimeSpan.FromSeconds(10);
                 await _client.SendAsync(_message);
                 Console.WriteLine($"Sending Message : {obj.Id} ");
             }
