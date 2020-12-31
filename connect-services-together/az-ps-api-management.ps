@@ -1,0 +1,30 @@
+// 1. Here we are setting PowerShell variables.
+// This is the name we want to give to the API 
+$appservicename = "core-management"
+
+// Here we mention an existing resource group
+$resourceGroupName = "demogrp1"
+
+// Here we specify the location in which we want to create our API Management Instance
+$location = "East US"
+
+// Here we specify the organization name
+$organisation = "CompanyA"
+
+// Here we specify the organization email
+$adminEmail = "admin@company.com"
+
+// Here we are assuming that our API is using the Open API Specification
+$Url="https://corewebapi4000.azurewebsites.net/swagger/v1/swagger.json"
+
+// Here we are giving the location of an Azure Web App that is hosting our API
+$webapi="https://corewebapi4000.azurewebsites.net"
+
+// The below PowerShell command can be used to create a new API Management Instance
+New-AzApiManagement -ResourceGroupName $resourceGroupName -Name $appservicename -Location $location -Organization $organisation -AdminEmail $adminEmail
+
+// After we create the Azure API Management Instance, we then need to set the context
+$context = New-AzApiManagementContext -ResourceGroupName $resourceGroupName -ServiceName $appservicename
+
+// We can then import an API using our web api
+$api = Import-AzApiManagementApi -Context $context -SpecificationUrl $Url -SpecificationFormat "OpenApi" -ServiceUrl $webapi
